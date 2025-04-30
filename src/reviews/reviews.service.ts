@@ -15,20 +15,24 @@ export class ReviewsService {
 
   // Get all reviews or reviews for a specific movie
   public async getReviews(movieId?: string): Promise<any[] | any> {
-    let query: CollectionReference<DocumentData> | Query<DocumentData> =
-      this.db.firestore.collection('reviews');
+    try {
+      let query: CollectionReference<DocumentData> | Query<DocumentData> =
+        this.db.firestore.collection('reviews').orderBy('createdAt', 'desc');
 
-    if (movieId) {
-      query = query.where('movieId', '==', movieId);
+      if (movieId) {
+        query = query.where('movieId', '==', movieId);
+      }
+
+      const snapshot = await query.get();
+      const reviews = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return reviews;
+    } catch (error) {
+      throw new Error(`Failed to fetch reviews: ${error.message}`);
     }
-
-    const snapshot = await query.get();
-    const reviews = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    return reviews;
   }
 
   // Create a new review
