@@ -18,10 +18,7 @@ async function bootstrap() {
 
   // Swagger config
   const config = new DocumentBuilder()
-    .setTitle('NestJS Starter Kit 🚀 API Documentation')
-    .setDescription(
-      '🏹👑 A starter kit for NestJS with Prisma, Passport, Zod, Swagger, and more. Built to be a solid foundation for YOUR next project 👑🏹.',
-    )
+    .setTitle('Movies Reviews Aggregator 🚀 API Documentation')
     .setVersion('0.1')
     .addServer('http://localhost:3000/', 'Local environment')
     .addBearerAuth()
